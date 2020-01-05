@@ -1,0 +1,78 @@
+
+<div class="row">
+        <div class="col-md-8">
+            <h5>Category List</h5>
+        </div>
+        <div class="col-md-4">
+                <button class="btn btn-primary" (click)="addCategory(content)">
+                        Add
+                    </button>
+                    <button class="btn btn-primary" [routerLink]="['/']">
+                            Products
+                        </button>
+            </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+                <table class="table table-striped">
+                        <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Code</th>
+                          <th scope="col">Total Products</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let cat of category; index as i">
+                          <th scope="row">{{ i + 1 }}</th>
+                          <td>
+                           {{ cat.name }}
+                          </td>
+                          <td>{{ cat.code }}</td>
+                          <td>{{ cat.totalProducts }}</td>
+                          <td><button class="btn btn-danger" (click)="deleteCategory(cat._id)" >
+                                Delete
+                            </button></td>
+                        </tr>
+                        </tbody>
+                      </table>
+        </div>
+    </div>
+    
+    <ng-template #content let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Add New Category</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && control.name.errors }" />
+                                <div *ngIf="submitted && control.name.errors" class="invalid-feedback">
+                                        <div *ngIf="control.name.errors.required">name is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code">code</label>
+                                <input type="code" formControlName="code" class="form-control" [ngClass]="{ 'is-invalid': submitted && control.code.errors }" />
+                                <div *ngIf="submitted && control.code.errors" class="invalid-feedback">
+                                    <div *ngIf="control.code.errors.required">code is required</div>
+                                </div>
+                            </div>
+                            
+                            <button [disabled]="loading" class="btn btn-primary">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Add
+                            </button>
+                            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                            
+                        </form>
+            </div>
+           
+          </ng-template>

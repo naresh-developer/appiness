@@ -1,0 +1,82 @@
+
+<div class="row">
+    <div class="col-md-8">
+        <h5>Product List</h5>
+    </div>
+    <div class="col-md-4">
+            <button class="btn btn-primary" (click)="addProduct(content)">
+                    Add
+                </button>
+                <button class="btn btn-primary" [routerLink]="['category']">
+                         Category
+                    </button>
+        </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+            <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Code</th>
+                      <th scope="col">Category</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let product of products; index as i">
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>
+                       {{ product.name }}
+                      </td>
+                      <td>{{ product.code }}</td>
+                      <td>{{ product.category_id.name }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add New Product</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+                <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && control.name.errors }" />
+                            <div *ngIf="submitted && control.name.errors" class="invalid-feedback">
+                                    <div *ngIf="control.name.errors.required">name is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="code">code</label>
+                            <input type="code" formControlName="code" class="form-control" [ngClass]="{ 'is-invalid': submitted && control.code.errors }" />
+                            <div *ngIf="submitted && control.code.errors" class="invalid-feedback">
+                                <div *ngIf="control.code.errors.required">code is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <label for="name">Category</label>
+                                <select formControlName="category_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && control.category_id.errors }">
+                                    <option *ngFor="let cat of category" [value]="cat._id" >{{cat.name}}</option>
+                                </select>
+                                <div *ngIf="submitted && control.category_id.errors" class="invalid-feedback">
+                                        <div *ngIf="control.category_id.errors.required">Category is required</div>
+                                </div>
+                            </div>
+                        <button [disabled]="loading" class="btn btn-primary">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Add
+                        </button>
+                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                        
+                    </form>
+        </div>
+       
+      </ng-template>
